@@ -8,7 +8,7 @@ typedef struct {
 	Rate rate;
 } LED_Task;
 
-LED_Task tasks[9];
+LED_Task tasks[15];
 
 task blink() {
 	// Setup the array.

@@ -1,8 +1,14 @@
-//// MOVEMENT FUNCTIONS ////
+bool atTarget(PID_Type type) {
+	if (abs(PID_internals[type][error]) <= PID_SYSTEM_HYSTERESIS[type]) {
+		return true;
+	}
+	return false;
+}
+
 void setTarget (int height) {
 	// Sets the PID target to height.
 	// Height is determined by the PID_INPUT_SCALE value (likely inches).
-	PID_target = height / PID_INPUT_SCALE;
+	PID_target = height * PID_INPUT_SCALE;
 }
 
 void surge (int power, float time = 0) {

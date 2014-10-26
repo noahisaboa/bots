@@ -10,6 +10,7 @@ enum RT_FUNCTION {LiftUp = 0, LiftDown, LiftJoy, LiftTopMacro, LiftBottomMacro, 
 short DRIVER_CONFIG[32];
 bool ControllerButtonsDown[32];
 
+const int DRV_JOYSTICK_THRESHOLD = 20; // The trim for the joystick values.
 const int DRV_INTERVALS_PER_SECOND = 50; // Hertz rate to check buttons.
 
 void setupConfig() {
@@ -33,7 +34,7 @@ void setupConfig() {
 	DRIVER_CONFIG[ClawLiftBottomMacro] = Btn7D;
 	DRIVER_CONFIG[ClawWristUp] = UNASSIGNED;
 	DRIVER_CONFIG[ClawWristDown] = UNASSIGNED;
-	DRIVER_CONFIG[ClawWristJoy] = Ch3;
+	DRIVER_CONFIG[ClawWristJoy] = Ch2;
 	DRIVER_CONFIG[ClawClamp] = Btn8R;
 	DRIVER_CONFIG[PidOverride] = Btn7L;
 
@@ -77,6 +78,13 @@ void setupConfig() {
 	}
 }
 
+int trimChannel(int value, int trim = DRV_JOYSTICK_THRESHOLD) {
+	if (abs(value) <= trim) {
+		return 0;
+	}
+	return value;
+}
+
 task buttonHandler()
 {
 	// Setup the drivers.
@@ -93,13 +101,14 @@ task buttonHandler()
 			if (vexRT[DRIVER_CONFIG[button]] == true) {
 				if (lastController[button] != true) {
 					// New button down. Add it to the Controller.
-					writeDebugStreamLine("Button %i down!", button);
+					writeDebugStreamLine("[Control]: Button %i down!", button);
 					ControllerButtonsDown[button] = true;
 					lastController[button] = true;
 				}
 			} else {
 				lastController[button] = false;
 			}
+
 		}
 		wait1Msec(1000 / DRV_INTERVALS_PER_SECOND);
 	}
