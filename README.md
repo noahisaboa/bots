@@ -3,7 +3,9 @@ bots
 
 Vex RobotC coding for **Skyrise**
 
-# Coding Rules
+
+## Coding Rules
+
 	1. Make sure it compiles, runs, and does not encounter immediate errors.
 	2. Follow naming conventions:
 		* a. For global module variables, add the module prefix (i.e. `PID_<name>`). Place these at the top of the file.
