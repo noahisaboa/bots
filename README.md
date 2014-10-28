@@ -1,9 +1,9 @@
-bots
+RoboRocks Triple Lift
 ====
 
 Vex RobotC coding for **Skyrise**
 
-## Coding Rules Before Committing
+## Coding Rules Before Committing.
 
 1. Make sure it compiles, runs, and does not encounter immediate errors.
 2. Follow naming conventions:
@@ -28,4 +28,4 @@ Controls should be simple and intuitive, as the driver does not have an abundanc
 The programming of the robot should not be bulky, or require an enormous amount of computing power to complete its task.
 
 As a team, we should continually search for methods of reducing computing power, and improving the robot's overall intelligence aside from the user.
-We should also stabilize the robot and it's code so that it becomes more robust. After all, we don't want it to fail in the middle of a match.
+We should also stabilize the robot and its code so that it becomes more robust. After all, we don't want it to fail in the middle of a match.
