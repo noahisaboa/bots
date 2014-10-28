@@ -11,6 +11,7 @@
 // Enum values for different blink task settings.
 enum LED_Level {Info = 1, Warning, Severe, UNASSIGNED = 99};
 enum LED_Rate {Solid = 1, Slow, Medium, Fast, UNASSIGNED = 99};
+typedef int LED;
 
 // LED_Task structure, comparable to OOP's Class.
 typedef struct {
@@ -76,7 +77,7 @@ task LED_blink() {
 	}
 }
 
-// Function that allows other modules to set up a blink task.
+// Function that allows other modules to set up a blink task. Returns the index in LED_tasks + 1.
 short LED_startBlinkTask(LED_Level level, LED_Rate rate) {
 	// Find an empty slot, then fill it with a new task.
 	// Return identifier.
@@ -84,10 +85,10 @@ short LED_startBlinkTask(LED_Level level, LED_Rate rate) {
 		if (LED_tasks[i].level == UNASSIGNED && LED_tasks[i].rate == UNASSIGNED) {
 			LED_tasks[i].level = level;
 			LED_tasks[i].rate = rate;
-			return i;
+			return i+1; //The +1 is to avoid confusion with NULL
 		}
 	}
-	// If there are too many LED_tasks, return null.
+	// If there are too many LED_tasks, return NULL
 	return NULL;
 }
 
@@ -95,6 +96,8 @@ short LED_startBlinkTask(LED_Level level, LED_Rate rate) {
 bool LED_stopBlinkTask(short identifier) {
 	// Check to see if given identifier is real, then clear it.
 	// Return with success value.
+	if(identifier == 0) return false;
+	identifier--; //Reverse NULL safeguard
 	if (LED_tasks[identifier].level != UNASSIGNED && LED_tasks[identifier].rate != UNASSIGNED) {
 		switch (LED_tasks[identifier].level) {
 			case Info:
@@ -113,6 +116,15 @@ bool LED_stopBlinkTask(short identifier) {
 	} else {
 		return false;
 	}
+}
+
+//Gives the ability to modify the rate and severity level of a blink task
+bool LED_modBlinkTask(short identifier, LED_LEVEL level, LED_RATE rate) {
+    if(identifier == 0) return false; //If it's NULL, don't modify a different index
+	identifier++;
+	LED_tasks[identifier].level = level;
+	LED_tasks[identifier].rate = rate;
+	return true;
 }
 
 // Clear the blink task memory.
